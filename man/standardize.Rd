@@ -17,8 +17,8 @@ A sparse_numeric object containing the standardized values
 }
 \description{
 Standardizes a sparse numeric vector by subtracting the mean and dividing by the
-standard deviation (z-score transformation). The result is returned as a sparse_numeric
-object, maintaining sparsity where possible.
+standard deviation The result is returned as a sparse_numeric
+object.
 }
 \examples{
 x <- as(c(1, 0, 3, 0, 5, 0, 0), "sparse_numeric")

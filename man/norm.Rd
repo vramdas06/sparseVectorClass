@@ -3,7 +3,7 @@
 \name{norm}
 \alias{norm}
 \alias{norm,sparse_numeric-method}
-\title{Calculate Euclidean Norm of Sparse Numeric Vector}
+\title{Calculate Norm of Sparse Numeric Vector}
 \usage{
 norm(x)
 
@@ -16,8 +16,7 @@ norm(x)
 A numeric scalar representing the Euclidean norm
 }
 \description{
-Computes the L2 (Euclidean) norm of a sparse numeric vector, which is the square
-root of the sum of squared values.
+Computes the squared norm of the vector, which is the square root of the sum of the squared individual elements of a vector.
 }
 \examples{
 x <- as(c(3, 0, 4, 0, 0), "sparse_numeric")

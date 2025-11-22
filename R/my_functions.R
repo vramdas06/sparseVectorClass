@@ -404,8 +404,8 @@ methods::setMethod("plot", c("sparse_numeric", "sparse_numeric"), function(x, y,
 
 #' Calculate Mean of Sparse Numeric Vector
 #'
-#' Computes the arithmetic mean of a sparse numeric vector, accounting for all elements
-#' including the implicit zeros.
+#' Computes the mean of a sparse numeric vector, accounting for all elements
+#' including zeros.
 #'
 #' @param x A sparse_numeric object
 #' @param ... Additional arguments (currently unused)
@@ -427,10 +427,9 @@ methods::setMethod("mean", "sparse_numeric",
 
 ### norm() ###
 
-#' Calculate Euclidean Norm of Sparse Numeric Vector
+#' Calculate Norm of Sparse Numeric Vector
 #'
-#' Computes the L2 (Euclidean) norm of a sparse numeric vector, which is the square
-#' root of the sum of squared values.
+#' Computes the squared norm of the vector, which is the square root of the sum of the squared individual elements of a vector.
 #'
 #' @param x A sparse_numeric object
 #'
@@ -460,8 +459,8 @@ methods::setMethod("norm", "sparse_numeric",
 #' Standardize a Sparse Numeric Vector
 #'
 #' Standardizes a sparse numeric vector by subtracting the mean and dividing by the
-#' standard deviation (z-score transformation). The result is returned as a sparse_numeric
-#' object, maintaining sparsity where possible.
+#' standard deviation The result is returned as a sparse_numeric
+#' object.
 #'
 #' @param x A sparse_numeric object
 #'

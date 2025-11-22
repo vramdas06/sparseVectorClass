@@ -15,8 +15,8 @@
 A numeric scalar representing the mean
 }
 \description{
-Computes the arithmetic mean of a sparse numeric vector, accounting for all elements
-including the implicit zeros.
+Computes the mean of a sparse numeric vector, accounting for all elements
+including zeros.
 }
 \examples{
 x <- as(c(2, 0, 6, 0, 0), "sparse_numeric")

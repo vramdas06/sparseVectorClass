@@ -8,7 +8,7 @@
 [![R-CMD-check.yaml](https://github.com/vramdas06/sparseVectorClass/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vramdas06/sparseVectorClass/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-sparseVector implements an S4 class for sparse numeric vectors—vectors
+sparseVector implements an S4 class for sparse numeric vectors, vectors
 where most elements are zeros. By storing only non-zero values and their
 positions, operations are much faster than regular dense vectors. The
 package provides methods for converting between sparse and dense
