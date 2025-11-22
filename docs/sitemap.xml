@@ -4,9 +4,12 @@
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
+<url><loc>/reference/coerce-numeric-sparse_numeric.html</loc></url>
+<url><loc>/reference/coerce-sparse_numeric-numeric.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/norm.html</loc></url>
 <url><loc>/reference/plot-sparse_numeric-sparse_numeric-method.html</loc></url>
+<url><loc>/reference/plus-sparse_numeric-sparse_numeric-method.html</loc></url>
 <url><loc>/reference/show-sparse_numeric-method.html</loc></url>
 <url><loc>/reference/show-sparse_numeric.html</loc></url>
 <url><loc>/reference/sparse-arithmetic.html</loc></url>
@@ -15,8 +18,10 @@
 <url><loc>/reference/sparse_mult.html</loc></url>
 <url><loc>/reference/sparse_numeric-coercion.html</loc></url>
 <url><loc>/reference/sparse_numeric-methods.html</loc></url>
+<url><loc>/reference/sparse_numeric-sparse_numeric-method.html</loc></url>
 <url><loc>/reference/sparse_numeric.html</loc></url>
 <url><loc>/reference/sparse_sub.html</loc></url>
 <url><loc>/reference/standardize.html</loc></url>
+<url><loc>/reference/times-sparse_numeric-sparse_numeric-method.html</loc></url>
 </urlset>
 

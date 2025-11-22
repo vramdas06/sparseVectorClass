@@ -19,8 +19,8 @@ pairs.
 }}
 
 \examples{
-x <- new("sparse_numeric", value = c(1, 3), pos = c(1L, 4L), length = 5L)
-y <- new("sparse_numeric", value = c(2), pos = c(4L), length = 5L)
+x <- methods::new("sparse_numeric", value = c(1, 3), pos = c(1L, 4L), length = 5L)
+y <- methods::new("sparse_numeric", value = c(2), pos = c(4L), length = 5L)
 x + y
 
 }

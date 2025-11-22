@@ -1,4 +1,4 @@
-#' @importFrom methods new setClass setGeneric setMethod setValidity setAs show
+#' @importFrom methods show
 #' @importFrom graphics plot points legend
 #' @importFrom grDevices rgb
 NULL
@@ -13,13 +13,13 @@ NULL
 #' @slot length An integer giving the total logical length of the vector.
 #'
 #' @examples
-#' x <- new("sparse_numeric", value = c(1, 3), pos = c(1L, 4L), length = 5L)
-#' y <- new("sparse_numeric", value = c(2), pos = c(4L), length = 5L)
+#' x <- methods::new("sparse_numeric", value = c(1, 3), pos = c(1L, 4L), length = 5L)
+#' y <- methods::new("sparse_numeric", value = c(2), pos = c(4L), length = 5L)
 #' x + y
 #'
 #' @name sparse_numeric
 #' @docType class
-setClass(
+methods::setClass(
     Class = "sparse_numeric",
     slots = c(
         value = "numeric",
@@ -30,7 +30,7 @@ setClass(
 
 ### Validity Method ###
 
-setValidity("sparse_numeric", function(object) {
+methods::setValidity("sparse_numeric", function(object) {
   if (length(object@value) != length(object@pos)) {
     return("Lengths of 'value' and 'pos' must be equal.")
   }
@@ -68,11 +68,11 @@ setValidity("sparse_numeric", function(object) {
 #' # Can also use: result <- x + y
 #'
 #' @export
-setGeneric("sparse_add", function(x, y, ...) standardGeneric("sparse_add"))
+methods::setGeneric("sparse_add", function(x, y, ...) standardGeneric("sparse_add"))
 
 #' @rdname sparse_add
 #' @export
-setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
+methods::setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
   function(x, y) {
     # Error when x and y are different lengths
     if (x@length != y@length)
@@ -81,7 +81,7 @@ setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
     # combine and sort all positions
     all_pos <- sort(unique(c(x@pos, y@pos)))
     if (length(all_pos) == 0) { # No non-zero elements in either x or y
-      return(new("sparse_numeric", value = numeric(0), pos = integer(0), length = x@length))
+      return(methods::new("sparse_numeric", value = numeric(0), pos = integer(0), length = x@length))
     }
 
     # get indices of all_pos where x is non 0
@@ -99,11 +99,11 @@ setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
     res_vals <- xvals + yvals
     keep <- res_vals != 0 # drop any 0s that are created
     if (!any(keep)) { # if all previously non-zero elements become 0, return an all 0 sparse vector
-      return(new("sparse_numeric", value = numeric(0), pos = integer(0), length = x@length))
+      return(methods::new("sparse_numeric", value = numeric(0), pos = integer(0), length = x@length))
     }
 
     # Return the resulting sparse vector
-    new("sparse_numeric",
+    methods::new("sparse_numeric",
         value = res_vals[keep],
         pos = as.integer(all_pos[keep]),
         length = x@length)
@@ -129,11 +129,11 @@ setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
 #' # Can also use: result <- x - y
 #'
 #' @export
-setGeneric("sparse_sub", function(x, y, ...) standardGeneric("sparse_sub"))
+methods::setGeneric("sparse_sub", function(x, y, ...) standardGeneric("sparse_sub"))
 
 #' @rdname sparse_sub
 #' @export
-setMethod("sparse_sub", c("sparse_numeric", "sparse_numeric"),
+methods::setMethod("sparse_sub", c("sparse_numeric", "sparse_numeric"),
           function(x, y) {
             # Error when x and y are different lengths
             if (x@length != y@length)
@@ -155,7 +155,7 @@ setMethod("sparse_sub", c("sparse_numeric", "sparse_numeric"),
             keep <- result_vals != 0 # index of non-zeroes in resulting value vector
 
             # create the resulting vector
-            new("sparse_numeric",
+            methods::new("sparse_numeric",
                 value = result_vals[keep],
                 pos = as.integer(all_pos[keep]),
                 length = x@length)
@@ -180,11 +180,11 @@ setMethod("sparse_sub", c("sparse_numeric", "sparse_numeric"),
 #' # Can also use: result <- x * y
 #'
 #' @export
-setGeneric("sparse_mult", function(x, y, ...) standardGeneric("sparse_mult"))
+methods::setGeneric("sparse_mult", function(x, y, ...) standardGeneric("sparse_mult"))
 
 #' @rdname sparse_mult
 #' @export
-setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
+methods::setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
           function(x, y) {
             # Error when x and y are different lengths
             if (x@length != y@length)
@@ -195,7 +195,7 @@ setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
 
             # all elements will be 0 if x and y have no common positions
             if (length(common_pos) == 0) {
-              return(new("sparse_numeric", value = numeric(0), pos = integer(0), length = x@length))
+              return(methods::new("sparse_numeric", value = numeric(0), pos = integer(0), length = x@length))
             }
 
             # make small vector with values at the common positions for x and y
@@ -207,7 +207,7 @@ setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
             keep <- result_vals != 0
 
             # create the resulting sparse vector
-            new("sparse_numeric",
+            methods::new("sparse_numeric",
                 value = result_vals[keep],
                 pos = as.integer(common_pos[keep]),
                 length = x@length)
@@ -232,11 +232,11 @@ setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
 #' # Result: 1*2 + 3*3 + 5*1 = 16
 #'
 #' @export
-setGeneric("sparse_crossprod", function(x, y, ...) standardGeneric("sparse_crossprod"))
+methods::setGeneric("sparse_crossprod", function(x, y, ...) standardGeneric("sparse_crossprod"))
 
 #' @rdname sparse_crossprod
 #' @export
-setMethod("sparse_crossprod", c("sparse_numeric", "sparse_numeric"),
+methods::setMethod("sparse_crossprod", c("sparse_numeric", "sparse_numeric"),
           function(x, y) {
             # Error when x and y are different lengths
             if (x@length != y@length)
@@ -249,55 +249,70 @@ setMethod("sparse_crossprod", c("sparse_numeric", "sparse_numeric"),
           })
 
 ### Operator overloading ###
-#' Arithmetic Operators for Sparse Numeric Vectors
+#' Add two sparse_numeric objects
 #'
-#' @param e1 A sparse_numeric object
-#' @param e2 A sparse_numeric object
+#' @param e1,e2 sparse_numeric objects
 #' @return A sparse_numeric object
-#' @name sparse-arithmetic
-#' @rdname sparse-arithmetic
-NULL
+#'
+#' @exportMethod +
+methods::setMethod("+", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_add(e1, e2))
 
-#' @rdname sparse-arithmetic
-#' @export
-setMethod("+", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_add(e1, e2))
+#' Subtract two sparse_numeric objects
+#'
+#' @param e1,e2 sparse_numeric objects
+#' @return A sparse_numeric object
+#'
+#' @exportMethod -
+methods::setMethod("-", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_sub(e1, e2))
 
-#' @rdname sparse-arithmetic
-#' @export
-setMethod("-", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_sub(e1, e2))
-
-#' @rdname sparse-arithmetic
-#' @export
-setMethod("*", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_mult(e1, e2))
+#' Multiply two sparse_numeric objects
+#'
+#' @param e1,e2 sparse_numeric objects
+#' @return A sparse_numeric object
+#'
+#' @exportMethod *
+methods::setMethod("*", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_mult(e1, e2))
 
 
 ### Coercion Methods ###
-
-#' Coercion Methods for sparse_numeric
+#' Coerce numeric to sparse_numeric
 #'
-#' S4 methods used to convert between `numeric` and `sparse_numeric`.
+#' Converts a numeric vector to sparse format, storing only non-zero elements.
 #'
-#' @param from The object to be coerced.
-#' @name sparse_numeric-coercion
-#' @docType methods
-#' @aliases
-#'   \S4method{coerce}{numeric,sparse_numeric}
-#'   \S4method{coerce}{sparse_numeric,numeric}
-NULL
+#' @param from Numeric vector to convert.
+#'
+#' @return A \code{sparse_numeric} object.
+#'
+#' @examples
+#' x <- c(0, 2.5, 0, 0, 3.7, 0, 1.2)
+#' sparse_x <- as(x, "sparse_numeric")
+#'
+#' @name coerce-numeric-sparse_numeric
 
-#' @rdname sparse_numeric-coercion
-#' @export
-setAs("numeric", "sparse_numeric", function(from) {
+methods::setAs("numeric", "sparse_numeric", function(from) {
   nonzero_idx <- which(from != 0) # get indices of non-zeor elements
-  new("sparse_numeric",
+  methods::new("sparse_numeric",
       value = from[nonzero_idx],
       pos = as.integer(nonzero_idx),
       length = as.integer(length(from)))
 })
 
-#' @rdname sparse_numeric-coercion
-#' @export
-setAs("sparse_numeric", "numeric", function(from) {
+#' Coerce sparse_numeric to numeric
+#'
+#' Converts a sparse_numeric object back to a standard numeric vector.
+#'
+#' @param from A \code{sparse_numeric} object to convert.
+#'
+#' @return A numeric vector with zeros in positions that were not stored.
+#'
+#' @examples
+#' x <- c(0, 2.5, 0, 0, 3.7, 0, 1.2)
+#' sparse_x <- as(x, "sparse_numeric")
+#' y <- as(sparse_x, "numeric")
+#'
+#' @name coerce-sparse_numeric-numeric
+
+methods::setAs("sparse_numeric", "numeric", function(from) {
   out <- numeric(from@length) # create numeric vector of length l
   out[from@pos] <- from@value # replace non-zero elements with values
   out
@@ -316,12 +331,12 @@ setAs("sparse_numeric", "numeric", function(from) {
 #'
 #' @examples
 #' x <- as(c(1, 0, 3, 0, 5), "sparse_numeric")
-#' show(x)
+#' methods::show(x)
 #' # Or simply: x
 #'
 #' @rdname show-sparse_numeric
 #' @export
-setMethod("show", "sparse_numeric", function(object) {
+methods::setMethod("show", "sparse_numeric", function(object) {
   cat("Sparse numeric vector of length", object@length, "\n")
   cat("Non-zero elements:\n")
   print(data.frame(pos = object@pos, value = object@value))
@@ -346,7 +361,7 @@ setMethod("show", "sparse_numeric", function(object) {
 #' plot(x, y)
 #'
 #' @export
-setMethod("plot", c("sparse_numeric", "sparse_numeric"), function(x, y, ...) {
+methods::setMethod("plot", c("sparse_numeric", "sparse_numeric"), function(x, y, ...) {
   if (x@length != y@length)
     stop("Vectors must have the same length.")
 
@@ -404,7 +419,7 @@ setMethod("plot", c("sparse_numeric", "sparse_numeric"), function(x, y, ...) {
 #'
 #' @rdname sparse_numeric-methods
 #' @export
-setMethod("mean", "sparse_numeric",
+methods::setMethod("mean", "sparse_numeric",
   function(x, ...) {
   # take mean including 0
   sum(x@value) / x@length
@@ -427,11 +442,11 @@ setMethod("mean", "sparse_numeric",
 #' # Result: sqrt(3^2 + 4^2) = 5
 #'
 #' @export
-setGeneric("norm", function(x) standardGeneric("norm"))
+methods::setGeneric("norm", function(x) standardGeneric("norm"))
 
 #' @rdname norm
 #' @export
-setMethod("norm", "sparse_numeric",
+methods::setMethod("norm", "sparse_numeric",
           function(x) {
             # squared sum of values
             sum_sq <- sum(x@value^2)
@@ -458,11 +473,11 @@ setMethod("norm", "sparse_numeric",
 #' # Result has mean ≈ 0 and standard deviation = 1
 #'
 #' @export
-setGeneric("standardize", function(x) standardGeneric("standardize"))
+methods::setGeneric("standardize", function(x) standardGeneric("standardize"))
 
 #' @rdname standardize
 #' @export
-setMethod("standardize", "sparse_numeric",
+methods::setMethod("standardize", "sparse_numeric",
   function(x) {
 
     # collect values for calculating variance
@@ -506,7 +521,7 @@ setMethod("standardize", "sparse_numeric",
     new_vals <- new_vals[o]
     new_pos  <- new_pos[o]
 
-    new("sparse_numeric",
+    methods::new("sparse_numeric",
         value = new_vals[keep],
         pos   = as.integer(new_pos[keep]),
         length = n)

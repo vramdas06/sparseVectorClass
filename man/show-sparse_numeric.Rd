@@ -18,7 +18,7 @@ and a data frame of non-zero positions and their values.
 }
 \examples{
 x <- as(c(1, 0, 3, 0, 5), "sparse_numeric")
-show(x)
+methods::show(x)
 # Or simply: x
 
 }
