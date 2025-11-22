@@ -1,5 +1,19 @@
-## HW5 Class/Methods
-
+#' Sparse Numeric Class
+#'
+#' An S4 class that stores a sparse numeric vector using value/position
+#' pairs.
+#'
+#' @slot value A numeric vector of non-zero values.
+#' @slot pos An integer vector of positions corresponding to the values.
+#' @slot length An integer giving the total logical length of the vector.
+#'
+#' @examples
+#' x <- new("sparse_numeric", value = c(1, 3), pos = c(1L, 4L), length = 5L)
+#' y <- new("sparse_numeric", value = c(2), pos = c(4L), length = 5L)
+#' x + y
+#'
+#' @name sparse_numeric
+#' @docType class
 setClass(
     Class = "sparse_numeric",
     slots = c(
@@ -31,8 +45,28 @@ setValidity("sparse_numeric", function(object) {
 })
 
 ### Addition Method ###
+
+#' Add Two Sparse Numeric Vectors
+#'
+#' Performs element-wise addition of two sparse numeric vectors of equal length.
+#'
+#' @param x A sparse_numeric object
+#' @param y A sparse_numeric object
+#' @param ... Additional arguments (currently unused)
+#'
+#' @return A sparse_numeric object containing the element-wise sum
+#'
+#' @examples
+#' x <- as(c(1, 0, 3, 0, 5), "sparse_numeric")
+#' y <- as(c(0, 2, 3, 0, 0), "sparse_numeric")
+#' result <- sparse_add(x, y)
+#' # Can also use: result <- x + y
+#'
+#' @export
 setGeneric("sparse_add", function(x, y, ...) standardGeneric("sparse_add"))
 
+#' @rdname sparse_add
+#' @export
 setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
   function(x, y) {
     # Error when x and y are different lengths
@@ -72,8 +106,28 @@ setMethod("sparse_add", c("sparse_numeric", "sparse_numeric"),
 
 
 ### sparse_sub ###
+
+#' Subtract Two Sparse Numeric Vectors
+#'
+#' Performs element-wise subtraction of two sparse numeric vectors of equal length.
+#'
+#' @param x A sparse_numeric object
+#' @param y A sparse_numeric object
+#' @param ... Additional arguments (currently unused)
+#'
+#' @return A sparse_numeric object containing the element-wise difference (x - y)
+#'
+#' @examples
+#' x <- as(c(5, 0, 3, 0, 2), "sparse_numeric")
+#' y <- as(c(1, 0, 3, 0, 0), "sparse_numeric")
+#' result <- sparse_sub(x, y)
+#' # Can also use: result <- x - y
+#'
+#' @export
 setGeneric("sparse_sub", function(x, y, ...) standardGeneric("sparse_sub"))
 
+#' @rdname sparse_sub
+#' @export
 setMethod("sparse_sub", c("sparse_numeric", "sparse_numeric"),
           function(x, y) {
             # Error when x and y are different lengths
@@ -103,8 +157,28 @@ setMethod("sparse_sub", c("sparse_numeric", "sparse_numeric"),
           })
 
 ### sparse_mult ###
+
+#' Multiply Two Sparse Numeric Vectors Element-wise
+#'
+#' Performs element-wise multiplication of two sparse numeric vectors of equal length.
+#'
+#' @param x A sparse_numeric object
+#' @param y A sparse_numeric object
+#' @param ... Additional arguments (currently unused)
+#'
+#' @return A sparse_numeric object containing the element-wise product
+#'
+#' @examples
+#' x <- as(c(2, 0, 3, 0, 5), "sparse_numeric")
+#' y <- as(c(1, 2, 3, 0, 0), "sparse_numeric")
+#' result <- sparse_mult(x, y)
+#' # Can also use: result <- x * y
+#'
+#' @export
 setGeneric("sparse_mult", function(x, y, ...) standardGeneric("sparse_mult"))
 
+#' @rdname sparse_mult
+#' @export
 setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
           function(x, y) {
             # Error when x and y are different lengths
@@ -135,8 +209,28 @@ setMethod("sparse_mult", c("sparse_numeric", "sparse_numeric"),
           })
 
 ### sparse_crossprod ##
+
+#' Compute Cross Product of Two Sparse Numeric Vectors
+#'
+#' Computes the cross product of two sparse numeric vectors of equal length.
+#'
+#' @param x A sparse_numeric object
+#' @param y A sparse_numeric object
+#' @param ... Additional arguments (currently unused)
+#'
+#' @return A numeric scalar representing the cross product
+#'
+#' @examples
+#' x <- as(c(1, 0, 3, 0, 5), "sparse_numeric")
+#' y <- as(c(2, 0, 3, 0, 1), "sparse_numeric")
+#' result <- sparse_crossprod(x, y)
+#' # Result: 1*2 + 3*3 + 5*1 = 16
+#'
+#' @export
 setGeneric("sparse_crossprod", function(x, y, ...) standardGeneric("sparse_crossprod"))
 
+#' @rdname sparse_crossprod
+#' @export
 setMethod("sparse_crossprod", c("sparse_numeric", "sparse_numeric"),
           function(x, y) {
             # Error when x and y are different lengths
@@ -150,14 +244,44 @@ setMethod("sparse_crossprod", c("sparse_numeric", "sparse_numeric"),
           })
 
 ### Operator overloading ###
+#' Arithmetic Operators for Sparse Numeric Vectors
+#'
+#' @param e1 A sparse_numeric object
+#' @param e2 A sparse_numeric object
+#' @return A sparse_numeric object
+#' @name sparse-arithmetic
+#' @rdname sparse-arithmetic
+NULL
+
+#' @rdname sparse-arithmetic
+#' @export
 setMethod("+", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_add(e1, e2))
+
+#' @rdname sparse-arithmetic
+#' @export
 setMethod("-", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_sub(e1, e2))
+
+#' @rdname sparse-arithmetic
+#' @export
 setMethod("*", c("sparse_numeric", "sparse_numeric"), function(e1, e2) sparse_mult(e1, e2))
 
 
 ### Coercion Methods ###
 
-# numeric -> sparse_numeric
+#' Coercion Methods for sparse_numeric
+#'
+#' S4 methods used to convert between `numeric` and `sparse_numeric`.
+#'
+#' @param from The object to be coerced.
+#' @name sparse_numeric-coercion
+#' @docType methods
+#' @aliases
+#'   \S4method{coerce}{numeric,sparse_numeric}
+#'   \S4method{coerce}{sparse_numeric,numeric}
+NULL
+
+#' @rdname sparse_numeric-coercion
+#' @export
 setAs("numeric", "sparse_numeric", function(from) {
   nonzero_idx <- which(from != 0) # get indices of non-zeor elements
   new("sparse_numeric",
@@ -166,7 +290,8 @@ setAs("numeric", "sparse_numeric", function(from) {
       length = as.integer(length(from)))
 })
 
-# sparse_numeric -> numeric
+#' @rdname sparse_numeric-coercion
+#' @export
 setAs("sparse_numeric", "numeric", function(from) {
   out <- numeric(from@length) # create numeric vector of length l
   out[from@pos] <- from@value # replace non-zero elements with values
@@ -174,6 +299,22 @@ setAs("sparse_numeric", "numeric", function(from) {
 })
 
 ### Show method ###
+
+#' Show Method for Sparse Numeric Vectors
+#'
+#' Displays a sparse numeric vector in a readable format, showing the total length
+#' and a data frame of non-zero positions and their values.
+#'
+#' @param object A sparse_numeric object
+#'
+#' @return Invisibly returns the object; called for side effects (printing)
+#'
+#' @examples
+#' x <- as(c(1, 0, 3, 0, 5), "sparse_numeric")
+#' show(x)
+#' # Or simply: x
+#'
+#' @export
 setMethod("show", "sparse_numeric", function(object) {
   cat("Sparse numeric vector of length", object@length, "\n")
   cat("Non-zero elements:\n")
@@ -181,6 +322,24 @@ setMethod("show", "sparse_numeric", function(object) {
 })
 
 ### Plot Method ###
+
+#' Plot Two Sparse Numeric Vectors
+#'
+#' Creates a scatter plot showing the overlapping non-zero elements of two sparse
+#' numeric vectors. The x-axis represents position, and the y-axis represents value.
+#'
+#' @param x A sparse_numeric object
+#' @param y A sparse_numeric object
+#' @param ... Additional graphical parameters passed to plot()
+#'
+#' @return returns NULL, but creates a plot
+#'
+#' @examples
+#' x <- as(c(1, 0, 3, 4, 5, 0, 7), "sparse_numeric")
+#' y <- as(c(2, 0, 3, 0, 6, 0, 8), "sparse_numeric")
+#' plot(x, y)
+#'
+#' @export
 setMethod("plot", c("sparse_numeric", "sparse_numeric"), function(x, y, ...) {
   if (x@length != y@length)
     stop("Vectors must have the same length.")
@@ -221,8 +380,24 @@ setMethod("plot", c("sparse_numeric", "sparse_numeric"), function(x, y, ...) {
 })
 
 ### mean() ###
-setGeneric("mean", function(x, ...) standardGeneric("mean"))
 
+#' Calculate Mean of Sparse Numeric Vector
+#'
+#' Computes the arithmetic mean of a sparse numeric vector, accounting for all elements
+#' including the implicit zeros.
+#'
+#' @param x A sparse_numeric object
+#' @param ... Additional arguments (currently unused)
+#'
+#' @return A numeric scalar representing the mean
+#'
+#' @examples
+#' x <- as(c(2, 0, 6, 0, 0), "sparse_numeric")
+#' mean(x)
+#' # Result: (2 + 0 + 6 + 0 + 0) / 5 = 1.6
+#'
+#' @rdname sparse_numeric-methods
+#' @export
 setMethod("mean", "sparse_numeric",
   function(x, ...) {
   # take mean including 0
@@ -231,8 +406,25 @@ setMethod("mean", "sparse_numeric",
 
 ### norm() ###
 
+#' Calculate Euclidean Norm of Sparse Numeric Vector
+#'
+#' Computes the L2 (Euclidean) norm of a sparse numeric vector, which is the square
+#' root of the sum of squared values.
+#'
+#' @param x A sparse_numeric object
+#'
+#' @return A numeric scalar representing the Euclidean norm
+#'
+#' @examples
+#' x <- as(c(3, 0, 4, 0, 0), "sparse_numeric")
+#' norm(x)
+#' # Result: sqrt(3^2 + 4^2) = 5
+#'
+#' @export
 setGeneric("norm", function(x) standardGeneric("norm"))
 
+#' @rdname norm
+#' @export
 setMethod("norm", "sparse_numeric",
           function(x) {
             # squared sum of values
@@ -243,8 +435,27 @@ setMethod("norm", "sparse_numeric",
 )
 
 ### standardize() ###
+
+#' Standardize a Sparse Numeric Vector
+#'
+#' Standardizes a sparse numeric vector by subtracting the mean and dividing by the
+#' standard deviation (z-score transformation). The result is returned as a sparse_numeric
+#' object, maintaining sparsity where possible.
+#'
+#' @param x A sparse_numeric object
+#'
+#' @return A sparse_numeric object containing the standardized values
+#'
+#' @examples
+#' x <- as(c(1, 0, 3, 0, 5, 0, 0), "sparse_numeric")
+#' x_std <- standardize(x)
+#' # Result has mean ≈ 0 and standard deviation = 1
+#'
+#' @export
 setGeneric("standardize", function(x) standardGeneric("standardize"))
 
+#' @rdname standardize
+#' @export
 setMethod("standardize", "sparse_numeric",
   function(x) {
 
