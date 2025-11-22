@@ -5,5 +5,17 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/norm.html</loc></url>
+<url><loc>/reference/plot-sparse_numeric-sparse_numeric-method.html</loc></url>
+<url><loc>/reference/show-sparse_numeric-method.html</loc></url>
+<url><loc>/reference/sparse-arithmetic.html</loc></url>
+<url><loc>/reference/sparse_add.html</loc></url>
+<url><loc>/reference/sparse_crossprod.html</loc></url>
+<url><loc>/reference/sparse_mult.html</loc></url>
+<url><loc>/reference/sparse_numeric-coercion.html</loc></url>
+<url><loc>/reference/sparse_numeric-methods.html</loc></url>
+<url><loc>/reference/sparse_numeric.html</loc></url>
+<url><loc>/reference/sparse_sub.html</loc></url>
+<url><loc>/reference/standardize.html</loc></url>
 </urlset>
 

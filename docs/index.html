@@ -55,7 +55,75 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-Implements an S4 class for sparse vectors (SVs) along with methods for arithmetic operations, norms, means, and standardization. Additionally, includes functionality to print SVs, coersion methods between dense vectors and SVs, and a method that plot the overlap between 2 SVs. All operations are performed without converting to dense format.
+<div class="section level1">
+<div class="page-header"><h1 id="sparsevector">sparseVector<a class="anchor" aria-label="anchor" href="#sparsevector"></a>
+</h1></div>
+<!-- badges: start -->
+
+<p>The goal of sparseVector is to define an S4 class that represents sparse numeric vectors. The methods in this package perform much more efficiently than typical dense vector operations when the vector contains a lot of 0s. This package includes coersion methods between sparse and dense vectors, simple arithmetic operations on sparse vectors, and more advanced capabilities like plotting sparse vector overlap and computing the mean, norm, and the standardized vector.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of sparseVector like so:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vramdas06/sparseVectorClass"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>This is a basic example which shows you how to use sparseVector:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sparseVector</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'sparseVector'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     norm</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">sparse_x</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">x</span>, <span class="st">"sparse_numeric"</span><span class="op">)</span></span>
+<span><span class="va">sparse_x</span></span>
+<span><span class="co">#&gt; Sparse numeric vector of length 7 </span></span>
+<span><span class="co">#&gt; Non-zero elements:</span></span>
+<span><span class="co">#&gt;   pos value</span></span>
+<span><span class="co">#&gt; 1   1     1</span></span>
+<span><span class="co">#&gt; 2   3     3</span></span>
+<span><span class="co">#&gt; 3   5     5</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, <span class="st">"sparse_numeric"</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"sparse_numeric"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add two sparse vectors</span></span>
+<span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span></span>
+<span><span class="co">#&gt; Sparse numeric vector of length 5 </span></span>
+<span><span class="co">#&gt; Non-zero elements:</span></span>
+<span><span class="co">#&gt;   pos value</span></span>
+<span><span class="co">#&gt; 1   1     1</span></span>
+<span><span class="co">#&gt; 2   2     2</span></span>
+<span><span class="co">#&gt; 3   3     6</span></span>
+<span><span class="co">#&gt; 4   5     6</span></span>
+<span></span>
+<span><span class="co"># Subtract</span></span>
+<span><span class="va">x</span> <span class="op">-</span> <span class="va">y</span></span>
+<span><span class="co">#&gt; Sparse numeric vector of length 5 </span></span>
+<span><span class="co">#&gt; Non-zero elements:</span></span>
+<span><span class="co">#&gt;   pos value</span></span>
+<span><span class="co">#&gt; 1   1     1</span></span>
+<span><span class="co">#&gt; 2   2    -2</span></span>
+<span><span class="co">#&gt; 3   5     4</span></span>
+<span></span>
+<span><span class="co"># Multiply (element-wise)</span></span>
+<span><span class="va">x</span> <span class="op">*</span> <span class="va">y</span></span>
+<span><span class="co">#&gt; Sparse numeric vector of length 5 </span></span>
+<span><span class="co">#&gt; Non-zero elements:</span></span>
+<span><span class="co">#&gt;   pos value</span></span>
+<span><span class="co">#&gt; 1   3     9</span></span>
+<span><span class="co">#&gt; 2   5     5</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-1.png" width="100%"></p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -82,7 +150,12 @@ Implements an S4 class for sparse vectors (SVs) along with methods for arithmeti
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/vramdas06/sparseVectorClass/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/vramdas06/sparseVectorClass/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check.yaml"></a></li>
+</ul>
+</div>
 
   </div>
 </div>

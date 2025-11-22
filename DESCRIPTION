@@ -10,6 +10,8 @@ Description: Implements an S4 class for sparse vectors (SVs) along with
     between 2 SVs. All operations are performed without converting to
     dense format.
 License: MIT + file LICENSE
+Imports: 
+    methods
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

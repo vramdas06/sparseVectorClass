@@ -1,3 +1,8 @@
+#' @importFrom methods new setClass setGeneric setMethod setValidity setAs show
+#' @importFrom graphics plot points legend
+#' @importFrom grDevices rgb
+NULL
+
 #' Sparse Numeric Class
 #'
 #' An S4 class that stores a sparse numeric vector using value/position
@@ -314,6 +319,7 @@ setAs("sparse_numeric", "numeric", function(from) {
 #' show(x)
 #' # Or simply: x
 #'
+#' @rdname show-sparse_numeric
 #' @export
 setMethod("show", "sparse_numeric", function(object) {
   cat("Sparse numeric vector of length", object@length, "\n")
